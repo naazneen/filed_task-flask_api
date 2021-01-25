@@ -2,85 +2,14 @@ from flask import request
 import flask
 from flask.views import View
 from flask_api import status
-from utils import card_is_valid  # to validate card. 
+from utils import card_is_valid  # to validate card.
+from utils import process 
 from datetime import datetime
 import random
 
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
-
-
-# Some exception in case of payment failure
-class PaymentError(Exception):
-    pass
-
-
-# make calls to appropriate Payment Gateway passing all details
-class process():
-    
-    def __init__(self,cnumber, cholder, amt, exp, scode):
-        self.cnummber = cnumber
-        self.cholder = cholder
-        self.exp = exp
-        self.scode = scode
-        self.amt = float(amt)
-
-
-    # select appropriate service, based on amount
-    def choose_pay_service(self):
-        if self.amt <= 20:  # for amount less than or equal 20
-            try:
-                self.cheap()
-                return (True, "using CheapPaymentGateway")
-            except PaymentError:
-                return (False, "using CheapPaymentGateway")
-
-            #return resp, "using CheapPaymentGateway"
-
-        elif 500 >= self.amt >= 21:  # for amount between 21 and 500 (inclusive)
-            try:  # try expensive if available
-                self.expensive()
-                return (True, "using ExpensivePaymentGateway")
-
-            except PaymentError:  # else go for cheap
-                try:
-                    self.cheap()
-                    return (True, "using CheapPaymentGateway")
-                except PaymentError:
-                    return (False, "using CheapPaymentGateway")
-
-        elif self.amt > 500:  # for amount more than 500
-            tries = 0 # 
-            resp = False
-            while not resp and tries < 3:  # three tries on premium
-                try:
-                    self.premium()
-                    return (True,"using PremiumPaymentGateway")  # if processed
-                except PaymentError:
-                    pass
-                tries += 1
-            return (False, "using PremiumPaymentGateway")
-
-
-    # Functions to just demonstrate the payment gateways
-    # raising some Error randomly for now.
-    def cheap(self):  # cheap payment gateway
-        n = random.randint(1, 30)
-        if n == 3 or n == 9 or n == 6:
-            raise PaymentError
-
-
-    def expensive(self):  # expensive payment gateway
-        n = random.randint(1, 30)
-        if n == 3 or n == 9:
-            raise PaymentError
-
-
-    def premium(self):  # premium payment gateway
-        n = random.randint(1, 30)
-        if n == 3:
-            raise PaymentError
 
 
 class ProcessPayment(View):
@@ -140,8 +69,9 @@ class ProcessPayment(View):
             if float(amount) < 0:  # if negative raise 400
                 return ("Error: invalid amount(negative)", status.HTTP_400_BAD_REQUEST)
 
-            pay_Class = process(cardnumber,cardholder,amount,exp, scode)
-            result = pay_Class.choose_pay_service()
+            # process class from utils.
+            pay_Class = process(cardnumber,cardholder,amount,exp, scode)  # initialize
+            result = pay_Class.choose_pay_service()  # make payment
             # print("result", result)
             if result[0]:  # if True
                 return ("Payment Processed " + result[1], status.HTTP_200_OK)
