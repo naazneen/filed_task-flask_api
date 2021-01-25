@@ -17,22 +17,22 @@ Go to root directory from cmd and type
 python api.py
 ```
 
-**POSTMAN** example:
-
-POST : http://127.0.0.1:5000/
-Body:
-{
-    "CreditCardNumber":"49927398716",
-    "CardHolder":"Naazneen",
-    "ExpirationDate":"12/21",
-    "Amount":"501",
-    "SecurityCode":"230"
-}
-
-Expected Output:
-Body:
-{Payment Processed using PremiumPaymentGateway}
-
+**POSTMAN** example:  
+  
+POST : http://127.0.0.1:5000/  
+Body:  
+{  
+    "CreditCardNumber":"49927398716",  
+    "CardHolder":"Naazneen",  
+    "ExpirationDate":"12/21",  
+    "Amount":"501",  
+    "SecurityCode":"230"  
+}  
+  
+Expected Output:    
+Body:  
+{Payment Processed using PremiumPaymentGateway}  
+  
 ## To test the app
 Go to root directory from cmd and type
 ```
