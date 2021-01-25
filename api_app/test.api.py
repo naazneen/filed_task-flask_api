@@ -26,6 +26,15 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(response.data,b"Error: CardNumber is invalid. Please provide correct CreditCardNumber.")
         
  
+    def test_CardNumber_alphanumeric(self):
+        headers = {'Content-type': 'application/json'}
+        test_data = json.dumps({'CreditCardNumber':"4992739871D", 'CardHolder':"Naazneen" ,
+         "ExpirationDate":"03/21", "SecurityCode":"541", "Amount":"120"})
+        response = self.tester.post(data=test_data,headers=headers)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data,b"Error: CardNumber is invalid. Please provide correct CreditCardNumber.")
+       
+
     def test_home_CardHolder_NotGiven(self):
         headers = {'Content-type': 'application/json'}
         test_data = json.dumps({'CreditCardNumber':"49927398716", 
