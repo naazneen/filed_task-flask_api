@@ -16,11 +16,31 @@ class process():
         self.amt = float(amt)
 
 
+    # Functions to just demonstrate the payment gateways
+    # raising some Error randomly for now.
+    def CheapPaymentGateway(self):  # cheap payment gateway
+        n = random.randint(1, 30)
+        if n == 3 or n == 9 or n == 6:
+            raise PaymentError
+
+
+    def ExpensivePaymentGateway(self):  # expensive payment gateway
+        n = random.randint(1, 30)
+        if n == 3 or n == 9:
+            raise PaymentError
+
+
+    def PremiumPaymentGateway(self):  # premium payment gateway
+        n = random.randint(1, 30)
+        if n == 3:
+            raise PaymentError
+
+
     # select appropriate service, based on amount
     def choose_pay_service(self):
         if self.amt <= 20:  # for amount less than or equal 20
             try:
-                self.cheap()
+                self.CheapPaymentGateway()
                 return (True, "using CheapPaymentGateway")
             except PaymentError:
                 return (False, "using CheapPaymentGateway")
@@ -29,12 +49,12 @@ class process():
 
         elif 500 >= self.amt >= 21:  # for amount between 21 and 500 (inclusive)
             try:  # try expensive if available
-                self.expensive()
+                self.ExpensivePaymentGateway()
                 return (True, "using ExpensivePaymentGateway")
 
             except PaymentError:  # else go for cheap
                 try:
-                    self.cheap()
+                    self.CheapPaymentGateway()
                     return (True, "using CheapPaymentGateway")
                 except PaymentError:
                     return (False, "using CheapPaymentGateway")
@@ -44,7 +64,7 @@ class process():
             resp = False
             while not resp and tries < 3:  # three tries on premium
                 try:
-                    self.premium()
+                    self.PremiumPaymentGateway()
                     return (True,"using PremiumPaymentGateway")  # if processed
                 except PaymentError:
                     pass
@@ -52,25 +72,7 @@ class process():
             return (False, "using PremiumPaymentGateway")
 
 
-    # Functions to just demonstrate the payment gateways
-    # raising some Error randomly for now.
-    def cheap(self):  # cheap payment gateway
-        n = random.randint(1, 30)
-        if n == 3 or n == 9 or n == 6:
-            raise PaymentError
-
-
-    def expensive(self):  # expensive payment gateway
-        n = random.randint(1, 30)
-        if n == 3 or n == 9:
-            raise PaymentError
-
-
-    def premium(self):  # premium payment gateway
-        n = random.randint(1, 30)
-        if n == 3:
-            raise PaymentError
-
+ 
 
 # if card is valid or not
 def card_is_valid(num):

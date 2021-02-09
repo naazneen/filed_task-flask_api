@@ -129,7 +129,7 @@ class MyTestCase(unittest.TestCase):
             #print("there")
             self.assertEqual(response.status_code, 200)
         else:
-            self.assertEqual(response.data, "Unknown error occured.")
+            self.assertEqual(response.data, b"Unknown error occured.")
             self.assertEqual(response.status_code, 500)
 
     
@@ -146,7 +146,7 @@ class MyTestCase(unittest.TestCase):
             # print("there")
             self.assertEqual(response.status_code, 200)
         else:
-            self.assertEqual(response.data, "Unknown error occured.")
+            self.assertEqual(response.data, b"Unknown error occured.")
             self.assertEqual(response.status_code, 500)
 
     
@@ -163,7 +163,7 @@ class MyTestCase(unittest.TestCase):
             # print("there")
             self.assertEqual(response.status_code, 200)
         else:
-            self.assertEqual(response.data, "Unknown error occured.")
+            self.assertEqual(response.data, b"Unknown error occured.")
             self.assertEqual(response.status_code, 500)
     
    
