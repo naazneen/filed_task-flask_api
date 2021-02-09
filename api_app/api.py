@@ -3,7 +3,7 @@ import flask
 from flask.views import View
 from flask_api import status
 from utils import card_is_valid  # to validate card.
-from utils import process 
+from payment import process 
 from datetime import datetime
 import random
 
@@ -20,7 +20,7 @@ class ProcessPayment(View):
         cardnumber = data.get('CreditCardNumber')
         if not cardnumber:
             return ("Error: No CreditCardNumber field provided. Please specify CreditCardNumber.", status.HTTP_400_BAD_REQUEST)
-        # must be valid
+        # must be valid; card_is_valid() from utils.py
         if not card_is_valid(cardnumber):
             return ("Error: CardNumber is invalid. Please provide correct CreditCardNumber.", status.HTTP_400_BAD_REQUEST)
         
@@ -78,7 +78,7 @@ class ProcessPayment(View):
 
             cardnumber,cardholder,amount,exp, scode = validated
 
-            # process class from utils.
+            # process class from payment.py.
             pay_Class = process(cardnumber,cardholder,amount,exp, scode)  # initialize
             result = pay_Class.choose_pay_service()  # make payment
             # print("result", result)
